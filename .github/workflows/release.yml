@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build tests
+        run: g++ -std=c++17 -o test_wifi_signal tests/test_wifi_signal.cpp
+
+      - name: Run tests
+        run: ./test_wifi_signal
+
+      - name: Build static binary
+        run: g++ -std=c++17 -O2 -static -o wifi-dbm standalone/wifi_signal.cpp
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wifi-dbm
+          generate_release_notes: false
+          body: |
+            ## wifi-dbm ${{ github.ref_name }}
+
+            Reads WiFi signal strength (dBm) directly from `/proc/net/wireless` — no dependencies, no subprocesses.
+
+            ### Download
+
+            | File | Description |
+            |------|-------------|
+            | `wifi-dbm` | Statically linked x86-64 Linux binary |
+
+            ### Usage
+
+            ```bash
+            chmod +x wifi-dbm
+            ./wifi-dbm              # default interface: wlp2s0
+            ./wifi-dbm wlan0        # specify interface
+            ```
+
+            Output is a single integer — e.g. `41` means **-41 dBm**.
+
+            ### Error codes
+
+            | Code | Meaning |
+            |------|---------|
+            | 1–110 | Valid signal (-1 to -110 dBm) |
+            | 252 | Implausible value (hardware/driver issue) |
+            | 253 | `/proc/net/wireless` parse failure |
+            | 254 | `/proc/net/wireless` unreadable (no WiFi / permissions) |
+            | 255 | Interface not found |
