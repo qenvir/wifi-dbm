@@ -39,12 +39,11 @@ jobs:
             -- -std=c++17
 
       - name: Run clang-tidy — shared-library
-        working-directory: shared-library
         run: |
-          clang-tidy wifi_signal.cpp \
+          clang-tidy shared-library/wifi_signal.cpp \
             --checks="cert-*,hicpp-*,bugprone-*,cppcoreguidelines-*,readability-*,performance-*" \
             --warnings-as-errors="" \
-            -- -std=c++17
+            -- -std=c++17 -I$(pwd)/shared-library
 
       - name: Run clang-tidy — header-only
         run: |
