@@ -43,7 +43,7 @@ jobs:
           clang-tidy shared-library/wifi_signal.cpp \
             --checks="cert-*,hicpp-*,bugprone-*,cppcoreguidelines-*,readability-*,performance-*" \
             --warnings-as-errors="" \
-            -- -std=c++17
+            -- -std=c++17 -I shared-library/
 
       - name: Run clang-tidy — header-only
         run: |
