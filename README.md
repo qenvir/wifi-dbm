@@ -1,5 +1,10 @@
 # wifi-dbm
 
+[![Build & Test](https://github.com/qenvir/wifi-dbm/actions/workflows/build.yml/badge.svg)](https://github.com/qenvir/wifi-dbm/actions/workflows/build.yml)
+[![Release](https://github.com/qenvir/wifi-dbm/actions/workflows/release.yml/badge.svg)](https://github.com/qenvir/wifi-dbm/actions/workflows/release.yml)
+[![Latest Release](https://img.shields.io/github/v/release/qenvir/wifi-dbm)](https://github.com/qenvir/wifi-dbm/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Minimal C++ tool to read WiFi signal strength in dBm on Linux.  
 Reads directly from `/proc/net/wireless` — no external dependencies, no subprocess, no `iwconfig`.
 
