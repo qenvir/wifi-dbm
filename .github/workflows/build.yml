@@ -21,3 +21,33 @@ jobs:
 
       - name: Run tests
         run: ./test_wifi_signal
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-tidy
+        run: sudo apt-get install -y clang-tidy
+
+      - name: Run clang-tidy — standalone
+        run: |
+          clang-tidy standalone/wifi_signal.cpp \
+            --checks="cert-*,hicpp-*,bugprone-*,cppcoreguidelines-*,readability-*,performance-*" \
+            --warnings-as-errors="" \
+            -- -std=c++17
+
+      - name: Run clang-tidy — shared-library
+        run: |
+          clang-tidy shared-library/wifi_signal.cpp \
+            --checks="cert-*,hicpp-*,bugprone-*,cppcoreguidelines-*,readability-*,performance-*" \
+            --warnings-as-errors="" \
+            -- -std=c++17
+
+      - name: Run clang-tidy — header-only
+        run: |
+          clang-tidy header-only/wifi_signal.h \
+            --checks="cert-*,hicpp-*,bugprone-*,cppcoreguidelines-*,readability-*,performance-*" \
+            --warnings-as-errors="" \
+            -- -std=c++17 -x c++-header
